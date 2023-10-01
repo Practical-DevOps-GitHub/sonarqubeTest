@@ -12,8 +12,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
       - name: Set up SonarQube
         uses: SonarSource/sonarqube-scan-action@7295e71c9583053f5bf40e9d4068a0c974603ec8
         with:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+          
+      - name: Run SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v1
+        with:
+          entryPoint: 'python -m unittest discover -s tests -p "*_test.py"'
+          args: ''
+          projectBaseDir: './'
